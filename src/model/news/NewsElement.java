@@ -37,8 +37,8 @@ public class NewsElement {
     this.ticker = ticker;
     service = new NaturalLanguageUnderstanding(
             NaturalLanguageUnderstanding.VERSION_DATE_2017_02_27,
-            "03db16ae-a602-4c2a-a844-3b789c6baf39",
-            "pnuHAmxfpbKU"
+            "*",
+            "*"
     );
   }
 
