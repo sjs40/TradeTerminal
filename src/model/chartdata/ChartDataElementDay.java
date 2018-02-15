@@ -2,7 +2,7 @@ package model.chartdata;
 
 import org.json.JSONObject;
 
-public class ChartDataElementDay {
+public class ChartDataElementDay implements ChartDataElement {
 
   private String date;
   private String minute;
@@ -30,8 +30,8 @@ public class ChartDataElementDay {
     return average;
   }
 
-  public double getX() {
-    return Double.parseDouble(minute);
+  public String getX() {
+    return minute;
   }
 
 }
