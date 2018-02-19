@@ -4,6 +4,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
@@ -17,21 +18,23 @@ import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
 
 import java.awt.*;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
 import javax.swing.*;
 
 import model.chartdata.ChartData;
+import model.stockdata.DataFunction;
 
 public class LineChart extends JFrame {
 
   private ChartData chartData;
-  private String range;
+  private DataFunction function;
   private String ticker;
 
-  public LineChart(String range, String ticker) {
-    super(range);
-    this.range = range;
+  public LineChart(DataFunction function, String ticker) {
+    super(ticker);
+    this.function = function;
     this.ticker = ticker;
 
     setPreferredSize(new Dimension(1000, 750));
@@ -48,26 +51,32 @@ public class LineChart extends JFrame {
   }
 
   private JFreeChart createChart() {
-    chartData = new ChartData(range, ticker);
+    chartData = new ChartData(function, ticker);
     XYDataset dataset = chartData.createDataset();
-    TimeSeries timeSeries = chartData.getTimeSeries();
     JFreeChart chart = ChartFactory.createTimeSeriesChart("Price",
             "Date",
             "Price",
             dataset);
 
+    XYItemRenderer renderer = chart.getXYPlot().getRenderer();
+    StandardXYToolTipGenerator g = new StandardXYToolTipGenerator(
+            StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
+            new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0.00")
+    );
+    renderer.setToolTipGenerator(g);
+
     chart.setBackgroundPaint(Color.white);
-    TimeSeries movingAverage = MovingAverage.createMovingAverage(timeSeries, "20SMA", 20, 0);
-    System.out.println(movingAverage.getDataItem(5).getValue());
-    TimeSeriesCollection movingAverageDataset = new TimeSeriesCollection();
-    movingAverageDataset.addSeries(movingAverage);
+    //TimeSeries movingAverage = MovingAverage.createMovingAverage(timeSeries, "20SMA", 20, 0);
+    //System.out.println(movingAverage.getDataItem(5).getValue());
+    //TimeSeriesCollection movingAverageDataset = new TimeSeriesCollection();
+    //movingAverageDataset.addSeries(movingAverage);
 
 
     XYPlot plot = chart.getXYPlot();
-    plot.setDataset(1, movingAverageDataset);
-    plot.setRenderer(1, new StandardXYItemRenderer());
-    System.out.println(plot.getDataset(0).getYValue(1, 1));
-    System.out.println(plot.getDataset(1).getYValue(1, 1));
+    //plot.setDataset(1, movingAverageDataset);
+    //plot.setRenderer(1, new StandardXYItemRenderer());
+    //System.out.println(plot.getDataset(0).getYValue(1, 1));
+    //System.out.println(plot.getDataset(1).getYValue(1, 1));
     plot.setBackgroundPaint(Color.WHITE);
     plot.setDomainGridlinePaint(Color.LIGHT_GRAY);
     plot.setRangeGridlinePaint(Color.LIGHT_GRAY);

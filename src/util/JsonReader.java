@@ -12,6 +12,11 @@ import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
 public class JsonReader {
 
   private static String readAll(Reader rd) throws IOException {
@@ -24,6 +29,25 @@ public class JsonReader {
   }
 
   public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+    TrustManager[] trustAllCerts = new TrustManager[]{
+            new X509TrustManager() {
+              public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return null;
+              }
+              public void checkClientTrusted(
+                      java.security.cert.X509Certificate[] certs, String authType) {
+              }
+              public void checkServerTrusted(
+                      java.security.cert.X509Certificate[] certs, String authType) {
+              }
+            }};
+
+    try {
+      SSLContext sc = SSLContext.getInstance("SSL");
+      sc.init(null, trustAllCerts, new java.security.SecureRandom());
+      HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+    } catch (Exception e) {
+    }
     InputStream is = new URL(url).openStream();
     try {
       BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));

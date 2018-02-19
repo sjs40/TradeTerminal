@@ -1,6 +1,7 @@
 import model.crypto.coin.CoinList;
 import model.crypto.pair.TopPairs;
 import model.crypto.price.CoinPrice;
+import model.stockdata.DataFunction;
 import view.charts.LineChart;
 
 public class CryptoTest {
@@ -16,7 +17,7 @@ public class CryptoTest {
 //    TopPairs pairs = new TopPairs("BTC");
 //    System.out.println(pairs.toStringFull());
 
-    LineChart chart = new LineChart("1y", "aapl");
+    LineChart chart = new LineChart(DataFunction.DAILY_ADJUST, "aapl");
   }
 
 }
