@@ -39,7 +39,6 @@ public class LineChart extends JFrame {
 
     setPreferredSize(new Dimension(1000, 750));
     setSize(1000, 750);
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     //getContentPane().setLayout(new BorderLayout());
 
     JFreeChart chart = createChart();

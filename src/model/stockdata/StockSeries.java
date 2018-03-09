@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
 
-import key.Key;
+import key.Props;
 import util.JsonReader;
 
 public class StockSeries {
@@ -16,7 +16,7 @@ public class StockSeries {
   private String function;
   private String url2 = "&symbol=";
   private String ticker;
-  private String url3 = "&apikey=" + Key.getKey();
+  private String url3 = "&apikey=" + Props.getKey();
 
   private ArrayList<StockData> data;
 

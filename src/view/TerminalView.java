@@ -6,7 +6,11 @@ import javax.swing.*;
 
 public class TerminalView extends JFrame {
 
-  private TerminalPanel tp;
+  private MainPanel mp;
+  private TwitterPanel tp;
+  private ForexPanel fp;
+  private BiblePanel bp;
+  private JTabbedPane tabbedPane;
 
   public TerminalView() {
     super();
@@ -16,9 +20,20 @@ public class TerminalView extends JFrame {
 
     setBackground(Color.BLACK);
 
-    tp = new TerminalPanel();
-    add(tp);
-    getRootPane().setDefaultButton(tp.getRunButton());
+    tabbedPane = new JTabbedPane();
+
+
+    mp = new MainPanel();
+    tp = new TwitterPanel();
+    fp = new ForexPanel();
+    bp = new BiblePanel();
+    tabbedPane.add("main", mp);
+    tabbedPane.add("twitter", tp);
+    tabbedPane.add("forex", fp);
+    tabbedPane.add("bible", bp);
+    add(tabbedPane);
+    getRootPane().setDefaultButton(mp.getEnterButton());
+    getRootPane().setDefaultButton(tp.getSearchButton());
     pack();
     setVisible(true);
   }

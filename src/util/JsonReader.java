@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.Charset;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -66,6 +67,22 @@ public class JsonReader {
       String jsonText = readAll(rd);
       JSONArray jsonArray = new JSONArray(jsonText);
       return jsonArray;
+    } finally {
+      is.close();
+    }
+  }
+
+  public static JSONObject readJsonFromUrlAuth(String url, String property, String value) throws
+          IOException, JSONException {
+    URL u = new URL(url);
+    URLConnection connection = u.openConnection();
+    connection.setRequestProperty(property, value);
+    InputStream is = connection.getInputStream();
+    try {
+      BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+      String jsonText = readAll(rd);
+      JSONObject json = new JSONObject(jsonText);
+      return json;
     } finally {
       is.close();
     }

@@ -5,5 +5,7 @@ public enum StocksType {
   COMPANY,
   NEWS,
   FINANCIAL,
-  EARNING
+  EARNING,
+  CHART,
+  CHART_DAY
 }

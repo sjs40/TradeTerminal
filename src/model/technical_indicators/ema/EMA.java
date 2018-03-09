@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
 
-import key.Key;
+import key.Props;
 import model.stockdata.DataFunction;
 import util.JsonReader;
 
@@ -21,7 +21,7 @@ public class EMA {
   private String interval;
   private String url3 = "&time_period=";
   private String timePeriod;
-  private String url4 = "&series_type=close&apikey=" + Key.getKey();
+  private String url4 = "&series_type=close&apikey=" + Props.getKey();
 
   private ArrayList<EMAElement> elements;
 
