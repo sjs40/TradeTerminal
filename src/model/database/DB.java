@@ -22,7 +22,7 @@ public class DB {
 
   public DB() {
     try {
-      con = DriverManager.getConnection(url, "root", "GORamblers2016");
+      con = DriverManager.getConnection(url, user, password);
       st = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
     } catch (SQLException e) {
       Logger logger = Logger.getLogger(DB.class.getName());
