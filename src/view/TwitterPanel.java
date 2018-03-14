@@ -5,6 +5,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import model.twitter.Twitter;
+import util.ClearFieldOnClick;
 
 public class TwitterPanel extends JPanel {
 
@@ -34,9 +35,10 @@ public class TwitterPanel extends JPanel {
     fieldAndButton.setPreferredSize(new Dimension(500, 50));
     fieldAndButton.setSize(500, 50);
 
-    searchField = new JTextField();
+    searchField = new JTextField("Enter Ticker to Search");
     searchField.setSize(300, 40);
     searchField.setPreferredSize(new Dimension(300, 40));
+    searchField.addMouseListener(new ClearFieldOnClick(searchField));
     fieldAndButton.add(searchField);
 
     searchButton = new JButton("Search");
@@ -51,10 +53,13 @@ public class TwitterPanel extends JPanel {
   public void setListeners() {
     searchButton.addActionListener(e -> {
       String searchTerm = searchField.getText();
-      System.out.println(searchTerm);
-      String result = twitter.getSearchResults(searchTerm);
-      System.out.println(result);
-      console.setText(result);
+      try {
+        String result = twitter.getSearchResults(searchTerm);
+        console.setText(result);
+      } catch (IllegalArgumentException iae) {
+        JOptionPane.showMessageDialog(this, "This is not a valid ticker",
+                "Twitter Error", JOptionPane.ERROR_MESSAGE);
+      }
     });
   }
 

@@ -1,5 +1,9 @@
 package util;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.text.NumberFormat;
+
 import model.Stocks;
 import model.StocksFactory;
 import model.StocksType;
@@ -7,6 +11,14 @@ import model.chartdata.ChartData;
 import view.charts.LineChart;
 
 public class Utils {
+
+  public static String currencyFormat(BigInteger i) {
+    return NumberFormat.getCurrencyInstance().format(i);
+  }
+
+  public static String currencyFormat(BigDecimal d) {
+    return NumberFormat.getCurrencyInstance().format(d);
+  }
 
   public static String getResult(String ticker, String type) {
     Stocks stock;

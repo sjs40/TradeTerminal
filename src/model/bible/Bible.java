@@ -16,7 +16,7 @@ public class Bible {
   private JSONObject json;
   private String output;
 
-  public Bible(String book, String chapter) {
+  public Bible(String book, String chapter) throws IllegalArgumentException {
     this.book = book;
     this.chapter = chapter;
     String url = url1 + this.book + url2 + this.chapter;
@@ -24,6 +24,7 @@ public class Bible {
       this.json = JsonReader.readJsonFromUrlAuth(url, "X-Mashape-Key", "nkkHJiSQ0jmshcimlIeRaIUyK0cSp1enLzUjsnQJRYXLkWMYe9");
     } catch (IOException e) {
       e.printStackTrace();
+      throw new IllegalArgumentException("Not a valid book and/or chapter.");
     }
   }
 

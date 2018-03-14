@@ -66,6 +66,10 @@ public class Quote implements Stocks {
     }
   }
 
+  public double getCurrentPrice() {
+    return this.latestPrice;
+  }
+
   public String toString() {
     String changePctStr = String.format("%.2f", changePct);
     return name + " (" + symbol + ")\n" +

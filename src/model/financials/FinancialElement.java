@@ -2,70 +2,74 @@ package model.financials;
 
 import org.json.JSONObject;
 
+import java.math.BigInteger;
+
+import util.Utils;
+
 public class FinancialElement {
 
   private String reportDate;
-  private int grossProfit;
-  private int costOfRev;
-  private int operatingRev;
-  private int totalRev;
-  private int operatingIncome;
-  private int netIncome;
-  private int rAndD;
-  private int operatingExpense;
-  private int currentAssets;
-  private int totalAssets;
-  private int totalLiabilities;
-  private int currentCash;
-  private int currentDebt;
-  private int totalCash;
-  private int totalDebt;
-  private int shareholderEquity;
-  private int cashChange;
-  private int cashFlow;
+  private BigInteger grossProfit;
+  private BigInteger costOfRev;
+  private BigInteger operatingRev;
+  private BigInteger totalRev;
+  private BigInteger operatingIncome;
+  private BigInteger netIncome;
+  private BigInteger rAndD;
+  private BigInteger operatingExpense;
+  private BigInteger currentAssets;
+  private BigInteger totalAssets;
+  private BigInteger totalLiabilities;
+  private BigInteger currentCash;
+  private BigInteger currentDebt;
+  private BigInteger totalCash;
+  private BigInteger totalDebt;
+  private BigInteger shareholderEquity;
+  private BigInteger cashChange;
+  private BigInteger cashFlow;
 
   public FinancialElement(JSONObject json) {
     reportDate = json.getString("reportDate");
-    grossProfit = json.getInt("grossProfit");
-    costOfRev = json.getInt("costOfRevenue");
-    operatingRev = json.getInt("operatingRevenue");
-    totalRev = json.getInt("totalRevenue");
-    operatingIncome = json.getInt("operatingIncome");
-    netIncome = json.getInt("netIncome");
-    rAndD = json.getInt("researchAndDevelopment");
-    operatingExpense = json.getInt("operatingExpense");
-    currentAssets = json.getInt("currentAssets");
-    totalAssets = json.getInt("totalAssets");
-    totalLiabilities = json.getInt("totalLiabilities");
-    currentCash = json.getInt("currentCash");
-    currentDebt = json.getInt("currentDebt");
-    totalCash = json.getInt("totalCash");
-    totalDebt = json.getInt("totalDebt");
-    shareholderEquity = json.getInt("shareholderEquity");
-    cashChange = json.getInt("cashChange");
-    cashFlow = json.getInt("cashFlow");
+    grossProfit = json.getBigInteger("grossProfit");
+    costOfRev = json.getBigInteger("costOfRevenue");
+    operatingRev = json.getBigInteger("operatingRevenue");
+    totalRev = json.getBigInteger("totalRevenue");
+    operatingIncome = json.getBigInteger("operatingIncome");
+    netIncome = json.getBigInteger("netIncome");
+    rAndD = json.getBigInteger("researchAndDevelopment");
+    operatingExpense = json.getBigInteger("operatingExpense");
+    currentAssets = json.getBigInteger("currentAssets");
+    totalAssets = json.getBigInteger("totalAssets");
+    totalLiabilities = json.getBigInteger("totalLiabilities");
+    currentCash = json.getBigInteger("currentCash");
+    currentDebt = json.getBigInteger("currentDebt");
+    totalCash = json.getBigInteger("totalCash");
+    totalDebt = json.getBigInteger("totalDebt");
+    shareholderEquity = json.getBigInteger("shareholderEquity");
+    cashChange = json.getBigInteger("cashChange");
+    cashFlow = json.getBigInteger("cashFlow");
   }
 
   public String toString() {
     return "Date: " + reportDate + "\n" +
-            "Gross Profit: " + grossProfit + "\n" +
-            "Cost of Revenue: " + costOfRev + "\n" +
-            "Operating Revenue: " + operatingRev + "\n" +
-            "Total Revenue: " + totalRev + "\n" +
-            "Operating Income: " + operatingIncome + "\n" +
-            "Net Income: " + netIncome + "\n" +
-            "R&D: " + rAndD + "\n" +
-            "Operating Expense: " + operatingExpense + "\n" +
-            "Current Assets: " + currentAssets + "\n" +
-            "Total Assets: " + totalAssets + "\n" +
-            "Total Liabilities: " + totalLiabilities + "\n" +
-            "Current Cash: " + currentCash + "\n" +
-            "Current Debt: " + currentDebt + "\n" +
-            "Total Cash: " + totalCash + "\n" +
-            "Total Debt: " + totalDebt + "\n" +
-            "Shareholder Equity: " + shareholderEquity + "\n" +
-            "Cash Change: " + cashChange + "\n" +
-            "Cash Flow: " + cashFlow + "\n\n";
+            "Gross Profit: " + Utils.currencyFormat(grossProfit) + "\n" +
+            "Cost of Revenue: " + Utils.currencyFormat(costOfRev) + "\n" +
+            "Operating Revenue: " + Utils.currencyFormat(operatingRev) + "\n" +
+            "Total Revenue: " + Utils.currencyFormat(totalRev) + "\n" +
+            "Operating Income: " + Utils.currencyFormat(operatingIncome) + "\n" +
+            "Net Income: " + Utils.currencyFormat(netIncome) + "\n" +
+            "R&D: " + Utils.currencyFormat(rAndD) + "\n" +
+            "Operating Expense: " + Utils.currencyFormat(operatingExpense) + "\n" +
+            "Current Assets: " + Utils.currencyFormat(currentAssets) + "\n" +
+            "Total Assets: " + Utils.currencyFormat(totalAssets) + "\n" +
+            "Total Liabilities: " + Utils.currencyFormat(totalLiabilities) + "\n" +
+            "Current Cash: " + Utils.currencyFormat(currentCash) + "\n" +
+            "Current Debt: " + Utils.currencyFormat(currentDebt) + "\n" +
+            "Total Cash: " + Utils.currencyFormat(totalCash) + "\n" +
+            "Total Debt: " + Utils.currencyFormat(totalDebt) + "\n" +
+            "Shareholder Equity: " + Utils.currencyFormat(shareholderEquity) + "\n" +
+            "Cash Change: " + Utils.currencyFormat(cashChange) + "\n" +
+            "Cash Flow: " + Utils.currencyFormat(cashFlow) + "\n\n";
   }
 
 }

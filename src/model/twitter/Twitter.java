@@ -32,7 +32,7 @@ public class Twitter {
     }
   }
 
-  public String getSearchResults(String ticker) {
+  public String getSearchResults(String ticker) throws IllegalArgumentException {
     try {
       Query query = new Query("$" + ticker);
       QueryResult result = this.twitter.search(query);
@@ -47,7 +47,7 @@ public class Twitter {
       return resultStr;
     } catch (TwitterException e) {
       e.printStackTrace();
+      throw new IllegalArgumentException("This is not a valid ticker.");
     }
-    return null;
   }
 }

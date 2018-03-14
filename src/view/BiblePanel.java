@@ -5,6 +5,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import model.bible.Bible;
+import util.ClearFieldOnClick;
 
 public class BiblePanel extends JPanel {
 
@@ -34,14 +35,16 @@ public class BiblePanel extends JPanel {
     fieldsAndButton.setPreferredSize(new Dimension(500, 50));
     fieldsAndButton.setSize(500, 50);
 
-    bookField = new JTextField();
+    bookField = new JTextField("Enter Book");
     bookField.setSize(175, 40);
     bookField.setPreferredSize(new Dimension(175, 40));
+    bookField.addMouseListener(new ClearFieldOnClick(bookField));
     fieldsAndButton.add(bookField);
 
-    chapterField = new JTextField();
+    chapterField = new JTextField("Enter Chapter");
     chapterField.setSize(175, 40);
     chapterField.setPreferredSize(new Dimension(175, 40));
+    chapterField.addMouseListener(new ClearFieldOnClick(bookField));
     fieldsAndButton.add(chapterField);
 
     enterButton = new JButton("Enter");
@@ -57,9 +60,15 @@ public class BiblePanel extends JPanel {
     enterButton.addActionListener(e -> {
       String book = bookField.getText();
       String chapter = chapterField.getText();
-      bible = new Bible(book, chapter);
-      bible.setOutput();
-      console.setText(bible.getOutput());
+      try {
+        bible = new Bible(book, chapter);
+        bible.setOutput();
+        console.setText(bible.getOutput());
+      } catch (IllegalArgumentException iae) {
+        JOptionPane.showMessageDialog(this,
+                "Not a valid book and/or chapter.",
+                "Bible Error", JOptionPane.ERROR_MESSAGE);
+      }
     });
   }
 

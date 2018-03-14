@@ -17,7 +17,7 @@ public class Financial implements Stocks {
   private ArrayList<FinancialElement> elements = new ArrayList<>();
 
   public Financial(String ticker) {
-    url = URL_1 + ticker + urlEnd;
+    url = URL_1 + ticker.toLowerCase() + urlEnd;
     loadStocks(ticker);
   }
 
@@ -26,7 +26,7 @@ public class Financial implements Stocks {
     try {
       JSONObject json = JsonReader.readJsonFromUrl(url);
       JSONArray array = json.getJSONArray("financials");
-      for (int i = 0; i < array.length(); i++) {
+      for (int i = array.length() - 1; i >= 0; i--) {
         elements.add(new FinancialElement(array.getJSONObject(i)));
       }
     } catch (IOException e) {
