@@ -44,3 +44,4 @@ the delete button.
 ## More additions to come!
 
 ## TODO:
+- Include other indicators on charts
