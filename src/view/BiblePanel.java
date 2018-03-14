@@ -44,7 +44,7 @@ public class BiblePanel extends JPanel {
     chapterField = new JTextField("Enter Chapter");
     chapterField.setSize(175, 40);
     chapterField.setPreferredSize(new Dimension(175, 40));
-    chapterField.addMouseListener(new ClearFieldOnClick(bookField));
+    chapterField.addMouseListener(new ClearFieldOnClick(chapterField));
     fieldsAndButton.add(chapterField);
 
     enterButton = new JButton("Enter");

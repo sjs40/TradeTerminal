@@ -4,6 +4,7 @@ import java.awt.*;
 
 import javax.swing.*;
 
+import model.menu.gui.CommandHelpView;
 import view.notesviews.NotesPanel;
 
 public class TerminalView extends JFrame {
@@ -24,8 +25,20 @@ public class TerminalView extends JFrame {
 
     setBackground(Color.BLACK);
 
-    tabbedPane = new JTabbedPane();
+    JMenuBar menuBar = new JMenuBar();
+    JMenu helpMenu = new JMenu("Help");
 
+    JMenuItem commandHelp = new JMenuItem("Commands");
+    commandHelp.addActionListener(e -> {
+      CommandHelpView commandHelpView = new CommandHelpView();
+    });
+
+    helpMenu.add(commandHelp);
+    menuBar.add(helpMenu);
+    add(menuBar);
+    setJMenuBar(menuBar);
+
+    tabbedPane = new JTabbedPane();
 
     mp = new MainPanel();
     tp = new TwitterPanel();

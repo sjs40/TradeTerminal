@@ -14,7 +14,12 @@ public class ClearFieldOnClick extends MouseAdapter {
   }
 
   @Override
-  public void mouseClicked(MouseEvent mouseEvent) {
+  public void mouseClicked(MouseEvent e) {
+    field.setText("");
+  }
+
+  @Override
+  public void mousePressed(MouseEvent e) {
     field.setText("");
   }
 

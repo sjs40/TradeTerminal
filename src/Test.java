@@ -27,7 +27,7 @@ public class Test {
 //    System.out.println(earning.toString());
 
     try {
-      UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+      UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");
     } catch (Exception e) {
       e.printStackTrace();
     }

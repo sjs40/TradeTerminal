@@ -23,7 +23,7 @@ public class Utils {
   public static String getResult(String ticker, String type) throws IllegalArgumentException {
     Stocks stock;
     type = type.toLowerCase();
-    if (type.split(" ").length > 1) {
+    if (type.split(" ").length > 1 && type.split(" ")[0].equals("chart")) {
       String[] typeArr = type.split(" ");
       String chart = typeArr[0];
       String period = typeArr[1];
