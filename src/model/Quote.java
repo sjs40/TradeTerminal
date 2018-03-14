@@ -1,7 +1,5 @@
 package model;
 
-import com.oracle.javafx.jmx.json.JSONReader;
-
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -33,13 +31,13 @@ public class Quote implements Stocks {
   private double low52;
   private double ytdChange;
 
-  public Quote(String ticker) {
+  public Quote(String ticker) throws IllegalArgumentException {
     url = URL_1 + ticker + urlEnd;
     loadStocks(ticker);
   }
 
   @Override
-  public void loadStocks(String ticker) {
+  public void loadStocks(String ticker) throws IllegalArgumentException {
     try {
       JSONObject json = JsonReader.readJsonFromUrl(url);
       symbol = json.getString("symbol");
@@ -63,6 +61,7 @@ public class Quote implements Stocks {
       ytdChange = json.getDouble("ytdChange");
     } catch (IOException e) {
       e.printStackTrace();
+      throw new IllegalArgumentException("Not a valid ticker.");
     }
   }
 

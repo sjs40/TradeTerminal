@@ -56,8 +56,13 @@ public class MainPanel extends JPanel {
     enterButton.addActionListener(e -> {
       String ticker = stockField.getText();
       String command = commandField.getText();
-      String result = Utils.getResult(ticker, command);
-      console.setText(result);
+      try {
+        String result = Utils.getResult(ticker, command);
+        console.setText(result);
+      } catch (IllegalArgumentException iae) {
+        JOptionPane.showMessageDialog(this, "Invalid Command.",
+                "Command Error", JOptionPane.ERROR_MESSAGE);
+      }
     });
   }
 

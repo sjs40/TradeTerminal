@@ -20,7 +20,7 @@ public class Utils {
     return NumberFormat.getCurrencyInstance().format(d);
   }
 
-  public static String getResult(String ticker, String type) {
+  public static String getResult(String ticker, String type) throws IllegalArgumentException {
     Stocks stock;
     type = type.toLowerCase();
     if (type.split(" ").length > 1) {
@@ -49,7 +49,7 @@ public class Utils {
         stock = StocksFactory.buildStocks(ticker, StocksType.EARNING);
         break;
       default:
-        throw new IllegalStateException("Invalid type");
+        throw new IllegalArgumentException("Invalid Command");
     }
 
     stock.loadStocks(ticker);

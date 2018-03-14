@@ -119,6 +119,9 @@ public class PortfolioPanel extends JPanel {
         JOptionPane.showMessageDialog(this,
                 "Not a valid amount. Please enter an integer.",
                 "Amount Error", JOptionPane.ERROR_MESSAGE);
+      } catch (IllegalArgumentException iae) {
+        JOptionPane.showMessageDialog(this,
+                "Not a valid ticker.", "Ticker Error", JOptionPane.ERROR_MESSAGE);
       }
     });
 
