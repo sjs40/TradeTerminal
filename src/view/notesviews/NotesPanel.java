@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 import model.database.DB;
 import model.database.notes.Note;
 import util.ClearFieldOnClick;
+import view.util.NoEditCellsTableModel;
 
 public class NotesPanel extends JPanel {
 
@@ -192,19 +193,6 @@ public class NotesPanel extends JPanel {
     }
     NoEditCellsTableModel tableModel = new NoEditCellsTableModel(rowData, colNamesVector);
     table.setModel(tableModel);
-  }
-
-}
-
-class NoEditCellsTableModel extends DefaultTableModel {
-
-  public NoEditCellsTableModel(Vector vector1, Vector vector2) {
-    super(vector1, vector2);
-  }
-
-  @Override
-  public boolean isCellEditable(int row, int column) {
-    return false;
   }
 
 }

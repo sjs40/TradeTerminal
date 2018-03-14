@@ -26,6 +26,7 @@ public class TwitterPanel extends JPanel {
     console.setSize(480, 410);
     console.setPreferredSize(new Dimension(480, 410));
     console.setText("Enter the ticker to search on Twitter above.");
+    console.setEnabled(false);
 
     consolePane = new JScrollPane(console);
     consolePane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);

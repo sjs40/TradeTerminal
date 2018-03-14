@@ -16,6 +16,7 @@ import model.Quote;
 import model.database.DB;
 import model.database.Position;
 import util.ClearFieldOnClick;
+import view.util.NoEditCellsTableModel;
 
 public class PortfolioPanel extends JPanel {
 
@@ -58,7 +59,7 @@ public class PortfolioPanel extends JPanel {
     String[] colNames = {"PositionID", "Ticker", "Date Purchased", "Price Purchased", "Current Price", "Amount Purchased", "Total Price Purchased"};
     colNamesVector = new Vector(Arrays.asList(colNames));
 
-    DefaultTableModel tableModel = new DefaultTableModel(rowData, colNamesVector);
+    NoEditCellsTableModel tableModel = new NoEditCellsTableModel(rowData, colNamesVector);
 
 
     table = new JTable(tableModel);
@@ -145,3 +146,5 @@ public class PortfolioPanel extends JPanel {
   }
 
 }
+
+

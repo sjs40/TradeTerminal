@@ -26,6 +26,7 @@ public class BiblePanel extends JPanel {
     console.setSize(480, 410);
     console.setPreferredSize(new Dimension(480, 410));
     console.setText("Enter a Book and Chapter above.");
+    console.setEnabled(false);
 
     consolePane = new JScrollPane(console);
     consolePane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);

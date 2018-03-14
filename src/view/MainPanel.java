@@ -24,6 +24,7 @@ public class MainPanel extends JPanel {
     console.setSize(480, 410);
     console.setPreferredSize(new Dimension(480, 410));
     console.setText("Welcome to TraderTerminal.\nEnter a ticker and command above.");
+    console.setEnabled(false);
 
     consolePane = new JScrollPane(console);
     consolePane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
