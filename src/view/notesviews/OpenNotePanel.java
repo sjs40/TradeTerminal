@@ -3,14 +3,13 @@ package view.notesviews;
 import java.awt.*;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
-import model.database.DB;
+import model.database.H2Database;
 import model.database.notes.Note;
 
 public class OpenNotePanel extends JPanel {
 
-  private DB database;
+  private H2Database database;
   private NotesPanel notesPanel;
 
   private JTextArea textArea;
@@ -24,7 +23,7 @@ public class OpenNotePanel extends JPanel {
 
   private boolean newNote = true;
 
-  public OpenNotePanel(DB database, NotesPanel notesPanel, int noteID, String title) {
+  public OpenNotePanel(H2Database database, NotesPanel notesPanel, int noteID, String title) {
     super();
     this.notesPanel = notesPanel;
     this.noteID = noteID;
@@ -33,7 +32,7 @@ public class OpenNotePanel extends JPanel {
     initPanel();
   }
 
-  public OpenNotePanel(DB database, NotesPanel notesPanel) {
+  public OpenNotePanel(H2Database database, NotesPanel notesPanel) {
     super();
     this.notesPanel = notesPanel;
     this.database = database;

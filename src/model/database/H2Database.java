@@ -1,7 +1,5 @@
 package model.database;
 
-import sun.rmi.runtime.Log;
-
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -14,51 +12,88 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javafx.geometry.Pos;
-import key.Props;
 import model.database.notes.Note;
 
-public class DB {
+public class H2Database {
 
-  private String url = "jdbc:mysql://localhost:3306/TradeTerminal?useSSL=false";
-  private String user = Props.getUser();
-  private String password = Props.getPassword();
-  private Connection con;
-  private Statement st;
+  private static final String DB_DRIVER = "org.h2.Driver";
+  private static final String DB_CONNECTION = "jdbc:h2:~/TradeTerminal";
+  private static final String DB_USER = "";
+  private static final String DB_PASSWORD = "";
 
-  public DB() {
+  private Connection conn;
+
+  public Connection getConn() {
     try {
-      con = DriverManager.getConnection(url, user, password);
-      st = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-    } catch (SQLException e) {
-      Logger logger = Logger.getLogger(DB.class.getName());
-      logger.log(Level.SEVERE, e.getMessage(), e);
+      Class.forName(DB_DRIVER);
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
     }
+    try {
+      if (conn != null) {
+        return conn;
+      }
+      conn = DriverManager.getConnection(DB_CONNECTION, DB_USER, DB_PASSWORD);
+      return conn;
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return conn;
   }
 
-  public void setUpDatabase() {
-    String query = "DROP TABLE IF EXISTS portfolio;\n" +
-            "\n" +
-            "CREATE TABLE portfolio (\n" +
-            "  positionid INT PRIMARY KEY,\n" +
-            "  ticker VARCHAR(7) NOT NULL,\n" +
-            "  date DATE NOT NULL,\n" +
-            "  price DECIMAL(7, 2) NOT NULL,\n" +
-            "  current_price DECIMAL(7, 2) NOT NULL,\n" +
-            "  amount INT NOT NULL\n" +
+  public void createTables() {
+    conn = getConn();
+    String note = "CREATE TABLE note (" +
+            "noteID INT NOT NULL AUTO_INCREMENT," +
+            "title VARCHAR(50) NOT NULL," +
+            "dateCreated DATE NOT NULL," +
+            "dateUpdated DATE NOT NULL," +
+            "PRIMARY KEY (noteID)" +
             ");";
+
+    String noteText = "CREATE TABLE noteText (" +
+            "noteID INT NOT NULL," +
+            "text LONGTEXT NOT NULL," +
+            "FOREIGN KEY (noteID) REFERENCES note (noteID)" +
+            "ON DELETE CASCADE ON UPDATE CASCADE" +
+            ");";
+
+    String portfolio = "CREATE TABLE portfolio (" +
+            "positionID INT PRIMARY KEY," +
+            "ticker VARCHAR(7) NOT NULL," +
+            "date DATE NOT NULL," +
+            "price DECIMAL(7,2) NOT NULL," +
+            "amount INT NOT NULL" +
+            ");";
+
     try {
-      st.executeQuery(query);
+      conn.setAutoCommit(false);
+
+      PreparedStatement notePrep = conn.prepareStatement(note);
+      notePrep.executeUpdate();
+      notePrep.close();
+
+      PreparedStatement noteTextPrep = conn.prepareStatement(noteText);
+      noteTextPrep.executeUpdate();
+      noteTextPrep.close();
+
+      PreparedStatement portfolioPrep = conn.prepareStatement(portfolio);
+      portfolioPrep.executeUpdate();
+      portfolioPrep.close();
+
+      conn.commit();
     } catch (SQLException e) {
-      Logger logger = Logger.getLogger(DB.class.getName());
+      Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
     }
   }
 
   public ArrayList<Position> getAllPositions() {
+    conn = getConn();
     String query = "SELECT * FROM portfolio;";
     ArrayList<Position> positions = new ArrayList<>();
     try {
+      Statement st = conn.createStatement();
       ResultSet rs = st.executeQuery(query);
       while (rs.next()) {
         int positonID = rs.getInt("positionid");
@@ -70,16 +105,18 @@ public class DB {
         positions.add(position);
       }
     } catch (SQLException e) {
-      Logger logger = Logger.getLogger(DB.class.getName());
+      Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
     }
     return positions;
   }
 
   public ArrayList<Position> getPositionsOfTicker(String ticker) {
+    conn = getConn();
     String query = "SELECT * FROM portfolio;";
     ArrayList<Position> positions = new ArrayList<>();
     try {
+      Statement st = conn.createStatement();
       ResultSet rs = st.executeQuery(query);
       if (rs.next()) {
         String dbTicker = rs.getString("ticker");
@@ -93,16 +130,18 @@ public class DB {
         }
       }
     } catch (SQLException e) {
-      Logger logger = Logger.getLogger(DB.class.getName());
+      Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
     }
     return positions;
   }
 
   public ArrayList<Position> getPositionOfDate(Date date) {
+    conn = getConn();
     String query = "SELECT * FROM portfolio;";
     ArrayList<Position> positions = new ArrayList<>();
     try {
+      Statement st = conn.createStatement();
       ResultSet rs = st.executeQuery(query);
       if (rs.next()) {
         Date dbDate = rs.getDate("date");
@@ -116,17 +155,18 @@ public class DB {
         }
       }
     } catch (SQLException e) {
-      Logger logger = Logger.getLogger(DB.class.getName());
+      Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
     }
     return positions;
   }
 
   public void addPosition(int positionID, String ticker, Date date, double price, int amount) {
+    conn = getConn();
     try {
       String insert = "INSERT INTO portfolio (positionid, ticker, date, price, amount)" +
               " values (?, ?, ?, ?, ?)";
-      PreparedStatement pst = con.prepareStatement(insert);
+      PreparedStatement pst = conn.prepareStatement(insert);
       pst.setInt(1, positionID);
       pst.setString(2, ticker);
       pst.setDate(3, date);
@@ -134,27 +174,30 @@ public class DB {
       pst.setInt(5, amount);
       pst.execute();
     } catch (SQLException e) {
-      Logger logger = Logger.getLogger(DB.class.getName());
+      Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
     }
   }
 
   public void deletePosition(int positionID) {
+    conn = getConn();
     try {
       String delete = "DELETE FROM portfolio WHERE positionid=?";
-      PreparedStatement pst = con.prepareStatement(delete);
+      PreparedStatement pst = conn.prepareStatement(delete);
       pst.setInt(1, positionID);
       pst.execute();
     } catch (SQLException e) {
-      Logger logger = Logger.getLogger(DB.class.getName());
+      Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
     }
   }
 
   public ArrayList<Note> getAllNoteDetails() {
+    conn = getConn();
     String query = "SELECT * FROM note;";
     ArrayList<Note> noteDetails = new ArrayList<>();
     try {
+      Statement st = conn.createStatement();
       ResultSet rs = st.executeQuery(query);
       while (rs.next()) {
         int noteID = rs.getInt("noteID");
@@ -168,16 +211,18 @@ public class DB {
         noteDetails.add(note);
       }
     } catch (SQLException e) {
-      Logger logger = Logger.getLogger(DB.class.getName());
+      Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
     }
     return noteDetails;
   }
 
   public ArrayList<Note> getAllNoteTexts() {
+    conn = getConn();
     String query = "SELECT * FROM noteText;";
     ArrayList<Note> noteTexts = new ArrayList<>();
     try {
+      Statement st = conn.createStatement();
       ResultSet rs = st.executeQuery(query);
       while (rs.next()) {
         int noteID = rs.getInt("noteID");
@@ -187,16 +232,17 @@ public class DB {
         noteTexts.add(note);
       }
     } catch (SQLException e) {
-      Logger logger = Logger.getLogger(DB.class.getName());
+      Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
     }
     return noteTexts;
   }
 
   public Note getNoteTextByID(int noteID) {
+    conn = getConn();
     try {
       String query = "SELECT * FROM noteText WHERE noteID=?;";
-      PreparedStatement pst = con.prepareStatement(query);
+      PreparedStatement pst = conn.prepareStatement(query);
       pst.setInt(1, noteID);
       ResultSet rs = pst.executeQuery();
       while (rs.next()) {
@@ -205,79 +251,82 @@ public class DB {
         return note;
       }
     } catch (SQLException e) {
-      Logger logger = Logger.getLogger(DB.class.getName());
+      Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
     }
     return new Note();
   }
 
   public void addNote(String title, String text) {
+    conn = getConn();
     String queryDetails = "INSERT INTO note (title, dateCreated, dateUpdated) VALUES (?, ?, ?);";
     String queryGetID = "SELECT noteID FROM note;";
     String queryText = "INSERT INTO noteText (noteID, text) VALUES (?, ?);";
     try {
-      PreparedStatement pstDetails = con.prepareStatement(queryDetails);
+      PreparedStatement pstDetails = conn.prepareStatement(queryDetails);
       Date currentDate = Date.valueOf(LocalDate.now());
       pstDetails.setString(1, title);
       pstDetails.setDate(2, currentDate);
       pstDetails.setDate(3, currentDate);
       pstDetails.execute();
 
+      Statement st = conn.createStatement();
       ResultSet rs = st.executeQuery(queryGetID);
       rs.last();
       int noteID = rs.getInt("noteID");
 
-      PreparedStatement pstText = con.prepareStatement(queryText);
+      PreparedStatement pstText = conn.prepareStatement(queryText);
       pstText.setInt(1, noteID);
       pstText.setString(2, text);
       pstText.execute();
     } catch (SQLException e) {
-      Logger logger = Logger.getLogger(DB.class.getName());
+      Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
     }
   }
 
   public void updateNote(int noteID, String title, String text) {
+    conn = getConn();
     String queryDate = "UPDATE note set dateUpdated = ? WHERE noteID = ?;";
     String queryTitle = "UPDATE note set title = ? WHERE noteID = ?;";
     String queryText = "UPDATE noteText set text = ? WHERE noteID = ?;";
     try {
-      PreparedStatement pstDetails = con.prepareStatement(queryDate);
+      PreparedStatement pstDetails = conn.prepareStatement(queryDate);
       Date currentDate = Date.valueOf(LocalDate.now());
       pstDetails.setDate(1, currentDate);
       pstDetails.setInt(2, noteID);
       pstDetails.executeUpdate();
 
-      PreparedStatement pstTitle = con.prepareStatement(queryTitle);
+      PreparedStatement pstTitle = conn.prepareStatement(queryTitle);
       pstTitle.setString(1, title);
       pstTitle.setInt(2, noteID);
       pstTitle.executeUpdate();
 
-      PreparedStatement pstText = con.prepareStatement(queryText);
+      PreparedStatement pstText = conn.prepareStatement(queryText);
       pstText.setString(1, text);
       pstText.setInt(2, noteID);
       pstText.executeUpdate();
     } catch (SQLException e) {
-      Logger logger = Logger.getLogger(DB.class.getName());
+      Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
     }
   }
 
   public void deleteNote(int noteID) {
+    conn = getConn();
     try {
       String deleteText = "DELETE FROM noteText WHERE nodeID=?;";
       String deleteDetails = "DELETE FROM note WHERE nodeID=?;";
-      PreparedStatement pstText = con.prepareStatement(deleteText);
+      PreparedStatement pstText = conn.prepareStatement(deleteText);
       pstText.setInt(1, noteID);
       pstText.execute();
 
-      PreparedStatement pstDetails = con.prepareStatement(deleteDetails);
+      PreparedStatement pstDetails = conn.prepareStatement(deleteDetails);
       pstDetails.setInt(1, noteID);
       pstDetails.execute();
     } catch (SQLException e) {
-      Logger logger = Logger.getLogger(DB.class.getName());
+      Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
     }
   }
-
 }

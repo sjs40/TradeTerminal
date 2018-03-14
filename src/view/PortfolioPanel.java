@@ -13,14 +13,14 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import model.Quote;
-import model.database.DB;
+import model.database.H2Database;
 import model.database.Position;
 import util.ClearFieldOnClick;
 import view.util.NoEditCellsTableModel;
 
 public class PortfolioPanel extends JPanel {
 
-  private DB database;
+  private H2Database database;
   private ArrayList<Position> positions;
   private JScrollPane scrollPane;
   private JTable table;
@@ -35,7 +35,7 @@ public class PortfolioPanel extends JPanel {
 
   public PortfolioPanel() {
     super();
-    database = new DB();
+    database = new H2Database();
     setPreferredSize(new Dimension(500, 500));
     setSize(500, 500);
     setLayout(new BorderLayout());

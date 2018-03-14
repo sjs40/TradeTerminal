@@ -10,16 +10,15 @@ import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
-import model.database.DB;
+import model.database.H2Database;
 import model.database.notes.Note;
 import util.ClearFieldOnClick;
 import view.util.NoEditCellsTableModel;
 
 public class NotesPanel extends JPanel {
 
-  private DB database;
+  private H2Database database;
   private ArrayList<Note> notes;
   private JScrollPane scrollPane;
   private JTable table;
@@ -36,7 +35,7 @@ public class NotesPanel extends JPanel {
 
   public NotesPanel() {
     super();
-    database = new DB();
+    database = new H2Database();
     setPreferredSize(new Dimension(500, 500));
     setSize(500, 500);
     setLayout(new BorderLayout());
