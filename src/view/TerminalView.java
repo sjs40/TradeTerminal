@@ -15,6 +15,7 @@ public class TerminalView extends JFrame {
   private BiblePanel bp;
   private PortfolioPanel pp;
   private NotesPanel np;
+  private RelatedPanel rp;
   private JTabbedPane tabbedPane;
 
   public TerminalView() {
@@ -46,12 +47,14 @@ public class TerminalView extends JFrame {
     bp = new BiblePanel();
     pp = new PortfolioPanel();
     np = new NotesPanel();
+    //rp = new RelatedPanel();
     tabbedPane.add("main", mp);
     tabbedPane.add("twitter", tp);
     //tabbedPane.add("forex", fp);
     tabbedPane.add("bible", bp);
     tabbedPane.add("portfolio", pp);
     tabbedPane.add("notes", np);
+    //tabbedPane.add("related", rp);
     add(tabbedPane);
     getRootPane().setDefaultButton(mp.getEnterButton());
     //getRootPane().setDefaultButton(tp.getSearchButton());

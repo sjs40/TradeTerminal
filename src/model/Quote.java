@@ -55,7 +55,11 @@ public class Quote implements Stocks {
       change = json.getDouble("change");
       changePct = json.getDouble("changePercent");
       marketCap = json.getInt("marketCap");
-      peRatio = json.getDouble("peRatio");
+      try {
+        peRatio = json.getDouble("peRatio");
+      } catch (Exception e) {
+        peRatio = -1;
+      }
       high52 = json.getDouble("week52High");
       low52 = json.getDouble("week52Low");
       ytdChange = json.getDouble("ytdChange");
@@ -63,6 +67,54 @@ public class Quote implements Stocks {
       e.printStackTrace();
       throw new IllegalArgumentException("Not a valid ticker.");
     }
+  }
+
+  public String getSymbol() {
+    return symbol;
+  }
+
+  public String getSector() {
+    return sector;
+  }
+
+  public double getOpen() {
+    return open;
+  }
+
+  public double getClose() {
+    return close;
+  }
+
+  public double getHigh() {
+    return high;
+  }
+
+  public double getLow() {
+    return low;
+  }
+
+  public double getChange() {
+    return change;
+  }
+
+  public double getChangePct() {
+    return changePct;
+  }
+
+  public double getHigh52() {
+    return high52;
+  }
+
+  public double getLow52() {
+    return low52;
+  }
+
+  public int getMarketCap() {
+    return marketCap;
+  }
+
+  public String getName() {
+    return name;
   }
 
   public double getCurrentPrice() {

@@ -3,30 +3,54 @@ package view.charts;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
+import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.data.DefaultKeyedValues;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.general.DatasetUtilities;
+import org.jfree.data.time.MovingAverage;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
 
 import java.awt.*;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
+import javax.swing.*;
+
 import model.chartdata.ChartData;
 import model.stockdata.DataFunction;
 
-public class LineChart {
+public class LineChartFrame extends JFrame {
 
+  private ChartData chartData;
   private DataFunction function;
   private String ticker;
 
-  public LineChart(DataFunction function, String ticker) {
+  public LineChartFrame(DataFunction function, String ticker) {
+    super(ticker);
     this.function = function;
     this.ticker = ticker;
+
+    setPreferredSize(new Dimension(1000, 750));
+    setSize(1000, 750);
+    //getContentPane().setLayout(new BorderLayout());
+
+    JFreeChart chart = createChart();
+    ChartPanel chartPanel = new ChartPanel(chart);
+    chartPanel.setHorizontalAxisTrace(true);
+    chartPanel.setVerticalAxisTrace(true);
+    setContentPane(chartPanel);
+    setVisible(true);
   }
 
   public JFreeChart createChart() {
-    ChartData chartData = new ChartData(function, ticker);
+    chartData = new ChartData(function, ticker);
     XYDataset dataset = chartData.createDataset();
     JFreeChart chart = ChartFactory.createTimeSeriesChart("Price",
             "Date",

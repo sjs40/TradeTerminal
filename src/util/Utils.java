@@ -3,6 +3,12 @@ package util;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.NumberFormat;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import model.Stocks;
 import model.StocksFactory;
@@ -54,6 +60,25 @@ public class Utils {
 
     stock.loadStocks(ticker);
     return stock.toString();
+  }
+
+  public static Map<String, Integer> sortByValue(Map<String, Integer> unsorted) {
+    List<Map.Entry<String, Integer>> list = new LinkedList<>(unsorted.entrySet());
+
+    Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+      @Override
+      public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+        return o1.getValue().compareTo(o2.getValue());
+      }
+    });
+    Collections.reverse(list);
+
+    Map<String, Integer> sorted = new LinkedHashMap<>();
+    for (Map.Entry<String, Integer> entry : list) {
+      sorted.put(entry.getKey(), entry.getValue());
+    }
+
+    return sorted;
   }
 
 }

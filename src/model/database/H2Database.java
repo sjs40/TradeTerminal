@@ -82,6 +82,7 @@ public class H2Database {
       portfolioPrep.close();
 
       conn.commit();
+      conn.close();
     } catch (SQLException e) {
       Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
@@ -104,6 +105,7 @@ public class H2Database {
         Position position = new Position(positonID, ticker, date, price, amount);
         positions.add(position);
       }
+      conn.close();
     } catch (SQLException e) {
       Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
@@ -129,6 +131,7 @@ public class H2Database {
           positions.add(position);
         }
       }
+      conn.close();
     } catch (SQLException e) {
       Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
@@ -154,6 +157,7 @@ public class H2Database {
           positions.add(position);
         }
       }
+      conn.close();
     } catch (SQLException e) {
       Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
@@ -173,6 +177,7 @@ public class H2Database {
       pst.setDouble(4, price);
       pst.setInt(5, amount);
       pst.execute();
+      conn.close();
     } catch (SQLException e) {
       Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
@@ -186,6 +191,7 @@ public class H2Database {
       PreparedStatement pst = conn.prepareStatement(delete);
       pst.setInt(1, positionID);
       pst.execute();
+      conn.close();
     } catch (SQLException e) {
       Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
@@ -210,6 +216,7 @@ public class H2Database {
         note.setDateUpdated(dateUpdated);
         noteDetails.add(note);
       }
+      conn.close();
     } catch (SQLException e) {
       Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
@@ -231,6 +238,7 @@ public class H2Database {
         note.setText(text);
         noteTexts.add(note);
       }
+      conn.close();
     } catch (SQLException e) {
       Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
@@ -250,6 +258,7 @@ public class H2Database {
         note.setText(rs.getString("text"));
         return note;
       }
+      conn.close();
     } catch (SQLException e) {
       Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
@@ -279,6 +288,7 @@ public class H2Database {
       pstText.setInt(1, noteID);
       pstText.setString(2, text);
       pstText.execute();
+      conn.close();
     } catch (SQLException e) {
       Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
@@ -306,6 +316,7 @@ public class H2Database {
       pstText.setString(1, text);
       pstText.setInt(2, noteID);
       pstText.executeUpdate();
+      conn.close();
     } catch (SQLException e) {
       Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
@@ -324,6 +335,7 @@ public class H2Database {
       PreparedStatement pstDetails = conn.prepareStatement(deleteDetails);
       pstDetails.setInt(1, noteID);
       pstDetails.execute();
+      conn.close();
     } catch (SQLException e) {
       Logger logger = Logger.getLogger(H2Database.class.getName());
       logger.log(Level.SEVERE, e.getMessage(), e);
